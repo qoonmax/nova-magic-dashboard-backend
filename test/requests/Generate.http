@@ -1,0 +1,8 @@
+POST http://localhost:8080/api/v1/generate
+Content-Type: application/json
+
+{
+  "laravel_version": "10.2.1",
+  "nova_version": "4.20.1",
+  "key": "2ni3udn2u3d9283f283fn2389f239f822938fn298"
+}
