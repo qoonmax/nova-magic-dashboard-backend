@@ -1,5 +1,12 @@
 .env
 
+# JetBrains IDEs
 *.idea
-.idea
-/.idea
+.idea/
+*.iml
+
+# VSCode
+.vscode/
+
+# OS generated files
+.DS_Store
