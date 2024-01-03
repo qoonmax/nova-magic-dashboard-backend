@@ -5,25 +5,21 @@ import (
 	"net/http"
 )
 
-type MainServiceInterface interface {
-	Run() (string, error)
+type GenerateServiceInterface interface {
+	Generate() (string, error)
 }
 
 type Handler struct {
-	MainService MainServiceInterface
+	GenerateService GenerateServiceInterface
 }
 
-func NewHandler(service MainServiceInterface) *Handler {
+func NewHandler(service GenerateServiceInterface) *Handler {
 	return &Handler{
-		MainService: service,
+		GenerateService: service,
 	}
 }
 
 func (h *Handler) Generate(ctx *gin.Context) {
-	if 1 > 2 {
-		newErrorResponse(ctx, http.StatusInternalServerError, "Error in generate")
-	}
-
 	var req Request
 
 	if err := ctx.BindJSON(&req); err != nil {
@@ -31,18 +27,18 @@ func (h *Handler) Generate(ctx *gin.Context) {
 		return
 	}
 
-	res, err := h.MainService.Run()
+	res, err := h.GenerateService.Generate()
 
 	if err != nil {
-		newErrorResponse(ctx, http.StatusBadRequest, "MainService error")
+		newErrorResponse(ctx, http.StatusBadRequest, err.Error())
 		return
 	}
 
 	ctx.JSON(http.StatusOK, map[string]interface{}{
-		"message":         "Hello",
-		"response":        res,
-		"laravel_version": req.LaravelVersion,
-		"nova_version":    req.NovaVersion,
-		"key":             req.Key,
+		"message":  "Hello",
+		"response": res,
+		"laravel":  req.LaravelVersion,
+		"nova":     req.NovaVersion,
+		"key":      req.Key,
 	})
 }

@@ -7,6 +7,8 @@ import (
 	v1 "magic-dashboard-backend/internal/controller/http/v1"
 	"magic-dashboard-backend/internal/server/http"
 	"magic-dashboard-backend/internal/service"
+	"magic-dashboard-backend/internal/service/auth"
+	"magic-dashboard-backend/internal/service/env_validate"
 )
 
 func initConfig() error {
@@ -26,13 +28,21 @@ func Run() {
 		logrus.Fatalf("error loading env(%s)", err.Error())
 	}
 
-	versionService := service.NewVersionService()
+	authService := auth.NewService()
+	phpValidator := env_validate.NewPhpValidator()
+	laravelValidator := env_validate.NewLaravelValidator()
+	novaValidator := env_validate.NewNovaValidator()
+	dbmsValidator := env_validate.NewDBMSValidator()
 
-	mainService := service.NewMainService(
-		versionService,
+	generateService := service.NewGenerateService(
+		authService,
+		phpValidator,
+		laravelValidator,
+		novaValidator,
+		dbmsValidator,
 	)
 
-	handler := v1.NewHandler(mainService)
+	handler := v1.NewHandler(generateService)
 	router := v1.NewRouter(handler)
 	server := new(http.Server)
 

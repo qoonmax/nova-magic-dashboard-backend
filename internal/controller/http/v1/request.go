@@ -1,7 +1,7 @@
 package v1
 
 type Request struct {
-	LaravelVersion string `json:"laravel_version"`
-	NovaVersion    string `json:"nova_version"`
+	LaravelVersion string `json:"laravel"`
+	NovaVersion    string `json:"nova"`
 	Key            string `json:"key"`
 }

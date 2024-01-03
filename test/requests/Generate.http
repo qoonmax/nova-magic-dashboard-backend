@@ -2,7 +2,57 @@ POST http://localhost:8080/api/v1/generate
 Content-Type: application/json
 
 {
-  "laravel_version": "10.2.1",
-  "nova_version": "4.20.1",
-  "key": "2ni3udn2u3d9283f283fn2389f239f822938fn298"
+  "key": "xxxx-xxxx-xxxx-xxxx",
+  "client_environment": {
+    "php_version": "8.2",
+    "laravel_version": "10.28.0",
+    "nova_version": "4.20.1",
+    "dbms_name": "pgsql"
+  },
+  "database": {
+    "tables": [
+      {
+        "name": "users",
+        "columns": [
+          {"name": "id", "type": "integer", "length": 10, "unsigned": true, "nullable": false, "auto_increment": true, "primary_key": true},
+          {"name": "name", "type": "string", "length": 255, "nullable": false},
+          {"name": "email", "type": "string", "length": 255, "nullable": false, "unique": true},
+          {"name": "email_verified_at", "type": "timestamp", "nullable": true},
+          {"name": "password", "type": "string", "length": 255, "nullable": false},
+          {"name": "remember_token", "type": "string", "length": 100, "nullable": true},
+          {"name": "created_at", "type": "timestamp", "nullable": false},
+          {"name": "updated_at", "type": "timestamp", "nullable": false}
+        ],
+        "data": [
+          {
+            "id": 1,
+            "name": "John Doe",
+            "email": "john.doe@example.com",
+            "email_verified_at": "2022-01-01T12:00:00",
+            "password": "hashed_password",
+            "remember_token": "random_token",
+            "created_at": "2022-01-01T12:00:00",
+            "updated_at": "2022-01-01T12:00:00"
+          },
+          {
+            "id": 2,
+            "name": "Jane Smith",
+            "email": "jane.smith@example.com",
+            "email_verified_at": null,
+            "password": "another_hashed_password",
+            "remember_token": null,
+            "created_at": "2022-02-01T08:30:00",
+            "updated_at": "2022-02-01T08:30:00"
+          }
+        ]
+      }
+    ]
+  },
+  "models": [
+    {
+      "file_name": "User.php",
+      "class_name": "User",
+      "data": "file path or string??"
+    }
+  ]
 }
