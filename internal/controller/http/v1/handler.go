@@ -6,7 +6,7 @@ import (
 )
 
 type GenerateServiceInterface interface {
-	Generate() (string, error)
+	Generate(req *Request) (string, error)
 }
 
 type Handler struct {
@@ -27,7 +27,7 @@ func (h *Handler) Generate(ctx *gin.Context) {
 		return
 	}
 
-	res, err := h.GenerateService.Generate()
+	res, err := h.GenerateService.Generate(&req)
 
 	if err != nil {
 		newErrorResponse(ctx, http.StatusBadRequest, err.Error())
@@ -35,10 +35,10 @@ func (h *Handler) Generate(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, map[string]interface{}{
-		"message":  "Hello",
-		"response": res,
-		"laravel":  req.LaravelVersion,
-		"nova":     req.NovaVersion,
-		"key":      req.Key,
+		"message": res,
+		"php":     req.ClientEnvironment.PhpVersion,
+		"laravel": req.ClientEnvironment.LaravelVersion,
+		"nova":    req.ClientEnvironment.NovaVersion,
+		"dbms":    req.ClientEnvironment.DbmsName,
 	})
 }

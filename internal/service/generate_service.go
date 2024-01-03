@@ -1,5 +1,9 @@
 package service
 
+import (
+	v1 "magic-dashboard-backend/internal/controller/http/v1"
+)
+
 type AuthServiceInterface interface {
 	Auth(string) error
 }
@@ -32,26 +36,26 @@ func NewGenerateService(
 	}
 }
 
-func (s *GenerateService) Generate() (string, error) {
+func (s *GenerateService) Generate(req *v1.Request) (string, error) {
 	if err := s.AuthService.Auth("xxxx-xxxx-xxxx-xxxx"); err != nil {
 		return "", err
 	}
 
-	if err := s.PhpValidator.Validate("7.4.0"); err != nil {
+	if err := s.PhpValidator.Validate(req.ClientEnvironment.PhpVersion); err != nil {
 		return "", err
 	}
 
-	if err := s.LaravelValidator.Validate("7.0.0"); err != nil {
+	if err := s.LaravelValidator.Validate(req.ClientEnvironment.LaravelVersion); err != nil {
 		return "", err
 	}
 
-	if err := s.NovaValidator.Validate("4.0.0"); err != nil {
+	if err := s.NovaValidator.Validate(req.ClientEnvironment.NovaVersion); err != nil {
 		return "", err
 	}
 
-	if err := s.DBMSValidator.Validate("pgsql"); err != nil {
+	if err := s.DBMSValidator.Validate(req.ClientEnvironment.DbmsName); err != nil {
 		return "", err
 	}
 
-	return "Result from Generate Service", nil
+	return "Hello world..", nil
 }
