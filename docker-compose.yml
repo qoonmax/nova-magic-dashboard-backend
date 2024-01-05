@@ -1,0 +1,12 @@
+version: "3"
+services:
+  app:
+    container_name: nova-magic-dashboard-backend
+    build:
+      context: .
+      dockerfile: ./cmd/app/Dockerfile
+    ports:
+      - "8080:8080"
+
+# на будущее посмотреть сюда https://github.com/evrone/go-clean-template/blob/master/docker-compose.yml
+# если это не для старой версии
