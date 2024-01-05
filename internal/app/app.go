@@ -1,14 +1,16 @@
 package app
 
 import (
-	"github.com/joho/godotenv"
-	"github.com/sirupsen/logrus"
-	"github.com/spf13/viper"
 	v1 "magic-dashboard-backend/internal/controller/http/v1"
 	"magic-dashboard-backend/internal/server/http"
 	"magic-dashboard-backend/internal/service"
 	"magic-dashboard-backend/internal/service/auth"
+	"magic-dashboard-backend/internal/service/db_table_analyze"
 	"magic-dashboard-backend/internal/service/env_validate"
+
+	"github.com/joho/godotenv"
+	"github.com/sirupsen/logrus"
+	"github.com/spf13/viper"
 )
 
 func initConfig() error {
@@ -29,10 +31,13 @@ func Run() {
 	}
 
 	authService := auth.NewService()
+
 	phpValidator := env_validate.NewPhpValidator()
 	laravelValidator := env_validate.NewLaravelValidator()
 	novaValidator := env_validate.NewNovaValidator()
 	dbmsValidator := env_validate.NewDBMSValidator()
+
+	dbTableAnalyzeService := db_table_analyze.NewService()
 
 	generateService := service.NewGenerateService(
 		authService,
@@ -40,6 +45,7 @@ func Run() {
 		laravelValidator,
 		novaValidator,
 		dbmsValidator,
+		dbTableAnalyzeService,
 	)
 
 	handler := v1.NewHandler(generateService)
