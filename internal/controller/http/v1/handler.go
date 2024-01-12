@@ -39,11 +39,11 @@ func (h *Handler) Generate(ctx *gin.Context) {
 	instructions := map[string]interface{}{
 		"for_creating": []map[string]interface{}{
 			{
-				"path":    "app/Models/Mock.php",
+				"path":    "app/Models/Post.php",
 				"content": "<?php echo \"" + time.Now().Format("2006-01-02 15:04:05") + "\";",
 			},
 			{
-				"path":    "app/Nova/Mock.php",
+				"path":    "app/Nova/Post.php",
 				"content": "<?php echo \"" + time.Now().Format("2006-01-02 15:04:05") + "\";",
 			},
 		},
