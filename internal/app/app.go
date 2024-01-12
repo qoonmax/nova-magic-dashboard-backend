@@ -37,6 +37,8 @@ func Run() {
 	novaValidator := client_env_validate.NewNovaValidator()
 	dbmsValidator := client_env_validate.NewDBMSValidator()
 
+	//TODO: вынести валидацию из generateService
+
 	dbTableAnalyzeService := db_table_analyze.NewService()
 
 	generateService := service.NewGenerateService(
