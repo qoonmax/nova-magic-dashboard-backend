@@ -3,6 +3,7 @@ package v1
 import (
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"time"
 )
 
 type GenerateServiceInterface interface {
@@ -27,18 +28,26 @@ func (h *Handler) Generate(ctx *gin.Context) {
 		return
 	}
 
-	res, err := h.GenerateService.Generate(&req)
+	_, err := h.GenerateService.Generate(&req)
 
 	if err != nil {
 		newErrorResponse(ctx, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	ctx.JSON(http.StatusOK, map[string]interface{}{
-		"message": res,
-		"php":     req.ClientEnvironment.PhpVersion,
-		"laravel": req.ClientEnvironment.LaravelVersion,
-		"nova":    req.ClientEnvironment.NovaVersion,
-		"dbms":    req.ClientEnvironment.DbmsName,
-	})
+	// Mock response data
+	instructions := map[string]interface{}{
+		"for_creating": []map[string]interface{}{
+			{
+				"path":    "app/Models/Mock.php",
+				"content": "<?php echo \"" + time.Now().Format("2006-01-02 15:04:05") + "\";",
+			},
+			{
+				"path":    "app/Nova/Mock.php",
+				"content": "<?php echo \"" + time.Now().Format("2006-01-02 15:04:05") + "\";",
+			},
+		},
+	}
+
+	ctx.JSON(http.StatusOK, instructions)
 }
