@@ -1,4 +1,4 @@
-package env_validate
+package client_env_validate
 
 import (
 	"errors"

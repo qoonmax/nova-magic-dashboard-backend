@@ -5,8 +5,8 @@ import (
 	"magic-dashboard-backend/internal/server/http"
 	"magic-dashboard-backend/internal/service"
 	"magic-dashboard-backend/internal/service/auth"
+	"magic-dashboard-backend/internal/service/client_env_validate"
 	"magic-dashboard-backend/internal/service/db_table_analyze"
-	"magic-dashboard-backend/internal/service/env_validate"
 
 	"github.com/joho/godotenv"
 	"github.com/sirupsen/logrus"
@@ -32,10 +32,10 @@ func Run() {
 
 	authService := auth.NewService()
 
-	phpValidator := env_validate.NewPhpValidator()
-	laravelValidator := env_validate.NewLaravelValidator()
-	novaValidator := env_validate.NewNovaValidator()
-	dbmsValidator := env_validate.NewDBMSValidator()
+	phpValidator := client_env_validate.NewPhpValidator()
+	laravelValidator := client_env_validate.NewLaravelValidator()
+	novaValidator := client_env_validate.NewNovaValidator()
+	dbmsValidator := client_env_validate.NewDBMSValidator()
 
 	dbTableAnalyzeService := db_table_analyze.NewService()
 

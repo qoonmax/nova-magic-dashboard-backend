@@ -2,7 +2,6 @@ POST http://localhost:8080/api/v1/generate
 Content-Type: application/json
 
 {
-  "key": "xxxx-xxxx-xxxx-xxxx",
   "client_environment": {
     "php_version": "8.2",
     "laravel_version": "10.28.0",
@@ -12,7 +11,7 @@ Content-Type: application/json
   "database": {
     "tables": [
       {
-        "name": "users",
+        "name": "children",
         "columns": [
           {"name": "id", "type": "integer", "length": 10, "unsigned": true, "nullable": false, "auto_increment": true, "primary_key": true},
           {"name": "name", "type": "string", "length": 255, "nullable": false},
