@@ -1,12 +1,22 @@
-version: "3"
+version: "3.4"
+
+networks:
+  internal:
+    external: false
+  nmdc:
+    external: true
+
 services:
   app:
-    container_name: nova-magic-dashboard-backend
     build:
       context: .
       dockerfile: ./cmd/app/Dockerfile
+    networks:
+      - internal
+      - nmdc
     ports:
       - "8080:8080"
+    container_name: nova-magic-dashboard-backend
 
 # на будущее посмотреть сюда https://github.com/evrone/go-clean-template/blob/master/docker-compose.yml
 # если это не для старой версии
