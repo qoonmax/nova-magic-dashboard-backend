@@ -1,16 +1,16 @@
-package v1
+package request
 
-type Request struct {
+type GenerateRequest struct {
 	Key               string            `json:"key"`
 	ClientEnvironment ClientEnvironment `json:"client_environment"`
 	Database          Database          `json:"database"`
 }
 
 type ClientEnvironment struct {
-	PhpVersion     string `json:"php_version"`
-	LaravelVersion string `json:"laravel_version"`
-	NovaVersion    string `json:"nova_version"`
-	DbmsName       string `json:"dbms_name"`
+	PhpVersion         string `json:"php_version"`
+	LaravelVersion     string `json:"laravel_version"`
+	NovaVersion        string `json:"nova_version"`
+	DatabaseDriverName string `json:"database_driver_name"`
 }
 
 type Database struct {

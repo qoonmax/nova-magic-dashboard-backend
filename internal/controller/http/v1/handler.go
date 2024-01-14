@@ -2,52 +2,35 @@ package v1
 
 import (
 	"github.com/gin-gonic/gin"
+	"magic-dashboard-backend/internal/controller/http/v1/request"
+	"magic-dashboard-backend/internal/service"
 	"net/http"
-	"time"
 )
 
-type GenerateServiceInterface interface {
-	Generate(req *Request) (string, error)
-}
-
 type Handler struct {
-	GenerateService GenerateServiceInterface
+	service *service.Service
 }
 
-func NewHandler(service GenerateServiceInterface) *Handler {
+func NewHandler(s *service.Service) *Handler {
 	return &Handler{
-		GenerateService: service,
+		service: s,
 	}
 }
 
 func (h *Handler) Generate(ctx *gin.Context) {
-	var req Request
+	var req request.GenerateRequest
 
 	if err := ctx.BindJSON(&req); err != nil {
 		newErrorResponse(ctx, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	_, err := h.GenerateService.Generate(&req)
+	pctx, err := h.service.GenerationService.Generate(&req)
 
 	if err != nil {
 		newErrorResponse(ctx, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	// Mock response data
-	instructions := map[string]interface{}{
-		"for_creating": []map[string]interface{}{
-			{
-				"path":    "app/Models/Post.php",
-				"content": "<?php echo \"" + time.Now().Format("2006-01-02 15:04:05") + "\";",
-			},
-			{
-				"path":    "app/Nova/Post.php",
-				"content": "<?php echo \"" + time.Now().Format("2006-01-02 15:04:05") + "\";",
-			},
-		},
-	}
-
-	ctx.JSON(http.StatusOK, instructions)
+	ctx.JSON(http.StatusOK, map[string]interface{}{"for_creating": pctx.Instructions})
 }

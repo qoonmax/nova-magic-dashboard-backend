@@ -6,7 +6,7 @@ Content-Type: application/json
     "php_version": "8.2",
     "laravel_version": "10.28.0",
     "nova_version": "4.20.1",
-    "dbms_name": "pgsql"
+    "database_driver_name": "pgsql"
   },
   "database": {
     "tables": [
