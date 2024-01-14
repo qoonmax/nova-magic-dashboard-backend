@@ -12,8 +12,7 @@ func GenerateModels(pctx *Context) error {
 	tables := pctx.Req.Database.Tables
 
 	for _, table := range tables {
-		modelName := utils.GetSingularName(table.Name)
-		modelName = strings.ToUpper(modelName[:1]) + modelName[1:]
+		modelName := getModelName(table.Name)
 
 		file, err := os.OpenFile("internal/service/pipeline/stubs/model.stub", os.O_RDWR|os.O_CREATE, 0755)
 		if err != nil {
@@ -41,4 +40,10 @@ func GenerateModels(pctx *Context) error {
 		})
 	}
 	return nil
+}
+
+func getModelName(table string) string {
+	modelName := utils.GetSingularName(table)
+	modelName = strings.ToUpper(modelName[:1]) + modelName[1:]
+	return modelName
 }
