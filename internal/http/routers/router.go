@@ -1,16 +1,15 @@
-package v1
+package routers
 
-import "github.com/gin-gonic/gin"
-
-type HandlerIterface interface {
-	Generate(*gin.Context)
-}
+import (
+	"github.com/gin-gonic/gin"
+	"magic-dashboard-backend/internal/http/handlers"
+)
 
 type Router struct {
-	Handler HandlerIterface
+	Handler *handlers.Handler
 }
 
-func NewRouter(handler HandlerIterface) *Router {
+func NewRouter(handler *handlers.Handler) *Router {
 	return &Router{
 		Handler: handler,
 	}

@@ -1,4 +1,4 @@
-package v1
+package responses
 
 import (
 	"github.com/gin-gonic/gin"
@@ -9,7 +9,7 @@ type Error struct {
 	Message string `json:"message"`
 }
 
-func newErrorResponse(ctx *gin.Context, statusCode int, message string) {
+func NewErrorResponse(ctx *gin.Context, statusCode int, message string) {
 	logrus.Error(message)
 	ctx.AbortWithStatusJSON(statusCode, Error{message})
 }

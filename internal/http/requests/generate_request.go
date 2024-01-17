@@ -1,4 +1,4 @@
-package request
+package requests
 
 type GenerateRequest struct {
 	Key               string            `json:"key"`

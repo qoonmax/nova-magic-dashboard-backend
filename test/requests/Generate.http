@@ -46,12 +46,5 @@ Content-Type: application/json
         ]
       }
     ]
-  },
-  "models": [
-    {
-      "file_name": "User.php",
-      "class_name": "User",
-      "data": "file path or string??"
-    }
-  ]
+  }
 }

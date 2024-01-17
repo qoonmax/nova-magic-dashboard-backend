@@ -1,23 +1,26 @@
-package pipeline
+package generate_service
 
 import (
 	"bufio"
 	"fmt"
-	"magic-dashboard-backend/internal/service/utils"
+	"magic-dashboard-backend/internal/http/requests"
+	"magic-dashboard-backend/internal/services/utils"
 	"os"
 	"strings"
 )
 
-func GenerateModels(pctx *Context) error {
-	tables := pctx.Req.Database.Tables
+func generateModels(req *requests.GenerateRequest) ([]Instruction, error) {
+	var instructions []Instruction
+
+	tables := req.Database.Tables
 
 	for _, table := range tables {
 		modelName := getModelName(table.Name)
 
-		file, err := os.OpenFile("internal/service/pipeline/stubs/model.stub", os.O_RDWR|os.O_CREATE, 0755)
+		file, err := os.OpenFile("internal/services/generate_service/stubs/model.stub", os.O_RDWR|os.O_CREATE, 0755)
 		if err != nil {
 			fmt.Println("error opening model.stub:", err)
-			return err
+			return nil, err
 		}
 
 		var updatedContent string
@@ -31,15 +34,16 @@ func GenerateModels(pctx *Context) error {
 
 		if err := scanner.Err(); err != nil {
 			fmt.Println("error reading model.stub:", err)
-			return err
+			return nil, err
 		}
 
-		pctx.AddInstruction(Instruction{
-			Path:    fmt.Sprintf("app/Models/%s.php", modelName),
-			Content: updatedContent,
-		})
+		instructions = append(instructions, newInstruction(
+			fmt.Sprintf("app/Models/%s.php", modelName),
+			updatedContent,
+		))
+
 	}
-	return nil
+	return instructions, nil
 }
 
 func getModelName(table string) string {

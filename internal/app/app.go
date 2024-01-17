@@ -3,35 +3,35 @@ package app
 import (
 	"github.com/joho/godotenv"
 	"github.com/sirupsen/logrus"
-	"github.com/spf13/viper"
-	v1 "magic-dashboard-backend/internal/controller/http/v1"
-	"magic-dashboard-backend/internal/server/http"
-	"magic-dashboard-backend/internal/service"
+	"magic-dashboard-backend/internal/http"
+	"magic-dashboard-backend/internal/http/handlers"
+	"magic-dashboard-backend/internal/http/routers"
+	"magic-dashboard-backend/internal/services"
+	"magic-dashboard-backend/internal/services/generate_service"
+	"os"
 )
-
-func initConfig() error {
-	viper.AddConfigPath("configs")
-	viper.SetConfigName("config")
-	return viper.ReadInConfig()
-}
 
 func Run() {
 	logrus.SetFormatter(new(logrus.JSONFormatter))
 
-	if err := initConfig(); err != nil {
-		logrus.Fatalf("error init config (%s)", err.Error())
-	}
-
 	if err := godotenv.Load(); err != nil {
-		logrus.Fatalf("error loading env(%s)", err.Error())
+		logrus.Fatalf("error loading env (%s)", err.Error())
 	}
 
-	serviceContainer := service.NewService()
-	handler := v1.NewHandler(serviceContainer)
-	router := v1.NewRouter(handler)
-	server := new(http.Server)
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
 
-	if err := server.Run(viper.GetString("port"), router.InitRoutes()); err != nil {
-		logrus.Fatalf("Error server (%s)", err.Error())
+	service := services.NewService(
+		generate_service.NewGenerateService(),
+	)
+	handler := handlers.NewHandler(service)
+	router := routers.NewRouter(handler)
+	routes := router.InitRoutes()
+	server := http.NewServer(port, routes)
+
+	if err := server.ListenAndServe(); err != nil {
+		logrus.Fatalf("error server (%s)", err.Error())
 	}
 }
