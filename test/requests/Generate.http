@@ -44,6 +44,26 @@ Content-Type: application/json
             "updated_at": "2022-02-01T08:30:00"
           }
         ]
+      },
+      {
+        "name": "posts",
+        "columns": [
+          {"name": "id", "type": "integer", "length": 10, "unsigned": true, "nullable": false, "auto_increment": true, "primary_key": true},
+          {"name": "title", "type": "string", "length": 255, "nullable": false},
+          {"name": "content", "type": "text", "length": 65555, "nullable": false}
+        ],
+        "data": [
+          {
+            "id": 1,
+            "title": "John Doe",
+            "content": "This is a post by John Doe"
+          },
+          {
+            "id": 2,
+            "title": "Jane Smith",
+            "content": "This is a post by John Doe"
+          }
+        ]
       }
     ]
   }

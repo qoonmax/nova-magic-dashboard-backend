@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-func generateModels(req *requests.GenerateRequest) ([]Instruction, error) {
+func generateResources(req *requests.GenerateRequest) ([]Instruction, error) {
 	var instructions []Instruction
 
 	tables := req.Database.Tables
@@ -17,9 +17,9 @@ func generateModels(req *requests.GenerateRequest) ([]Instruction, error) {
 	for _, table := range tables {
 		modelName := utils.GetModelName(table.Name)
 
-		file, err := os.OpenFile("internal/services/generate_service/stubs/model.stub", os.O_RDWR|os.O_CREATE, 0755)
+		file, err := os.OpenFile("internal/services/generate_service/stubs/resource.stub", os.O_RDWR|os.O_CREATE, 0755)
 		if err != nil {
-			fmt.Println("error opening model.stub:", err)
+			fmt.Println("error opening resource.stub:", err)
 			return nil, err
 		}
 
@@ -33,12 +33,12 @@ func generateModels(req *requests.GenerateRequest) ([]Instruction, error) {
 		}
 
 		if err := scanner.Err(); err != nil {
-			fmt.Println("error reading model.stub:", err)
+			fmt.Println("error reading resource.stub:", err)
 			return nil, err
 		}
 
 		instructions = append(instructions, newInstruction(
-			fmt.Sprintf("app/Models/%s.php", modelName),
+			fmt.Sprintf("app/Nova/%s.php", modelName),
 			updatedContent,
 		))
 

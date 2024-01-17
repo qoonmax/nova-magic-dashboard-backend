@@ -11,6 +11,8 @@ func NewGenerateService() *GenerateService {
 }
 
 func (s *GenerateService) Generate(req *requests.GenerateRequest) ([]Instruction, error) {
+	var instructions []Instruction
+
 	if err := validateGenerateRequest(req); err != nil {
 		return nil, err
 	}
@@ -19,5 +21,13 @@ func (s *GenerateService) Generate(req *requests.GenerateRequest) ([]Instruction
 	if err != nil {
 		return nil, err
 	}
-	return models, nil
+
+	resources, err := generateResources(req)
+	if err != nil {
+		return nil, err
+	}
+
+	instructions = append(instructions, models...)
+	instructions = append(instructions, resources...)
+	return instructions, nil
 }
