@@ -1,0 +1,4 @@
+    public function {{entity}}(): {{relationType}}
+    {
+        return $this->{{relationMethod}};
+    }

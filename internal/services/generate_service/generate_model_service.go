@@ -29,8 +29,12 @@ func generateModels(req *requests.GenerateRequest) ([]Instruction, error) {
 		for scanner.Scan() {
 			line := scanner.Text()
 			line = strings.Replace(line, "{{Model}}", modelName, -1)
+			line = strings.Replace(line, "{{Table}}", table.Name, -1)
 			updatedContent += line + "\n"
 		}
+
+		updatedContent += "\n" + fmt.Sprintf("    %s\n", getModelRelations(req))
+		updatedContent += "}"
 
 		if err := scanner.Err(); err != nil {
 			fmt.Println("error reading model.stub:", err)
@@ -44,4 +48,8 @@ func generateModels(req *requests.GenerateRequest) ([]Instruction, error) {
 
 	}
 	return instructions, nil
+}
+
+func getModelRelations(req *requests.GenerateRequest) string {
+	return "public function quiz (): \\Illuminate\\Database\\Eloquent\\Relations\\BelongsTo\n    {\n        return $this->belongsTo(Quiz::class);\n    }"
 }
