@@ -23,13 +23,13 @@ func generateResources(req *requests.GenerateRequest) ([]Instruction, error) {
 			return nil, err
 		}
 
-		var updatedContent string
+		var resourceContent string
 		scanner := bufio.NewScanner(file)
 
 		for scanner.Scan() {
 			line := scanner.Text()
 			line = strings.Replace(line, "{{Model}}", modelName, -1)
-			updatedContent += line + "\n"
+			resourceContent += line + "\n"
 		}
 
 		if err := scanner.Err(); err != nil {
@@ -39,7 +39,7 @@ func generateResources(req *requests.GenerateRequest) ([]Instruction, error) {
 
 		instructions = append(instructions, newInstruction(
 			fmt.Sprintf("app/Nova/%s.php", modelName),
-			updatedContent,
+			resourceContent,
 		))
 
 	}

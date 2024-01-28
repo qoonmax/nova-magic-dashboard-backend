@@ -23,18 +23,18 @@ func generateModels(req *requests.GenerateRequest) ([]Instruction, error) {
 			return nil, err
 		}
 
-		var updatedContent string
+		var modelContent string
 		scanner := bufio.NewScanner(file)
 
 		for scanner.Scan() {
 			line := scanner.Text()
 			line = strings.Replace(line, "{{Model}}", modelName, -1)
 			line = strings.Replace(line, "{{Table}}", table.Name, -1)
-			updatedContent += line + "\n"
+			modelContent += line + "\n"
 		}
 
-		updatedContent += "\n" + fmt.Sprintf("    %s\n", getModelRelations(req))
-		updatedContent += "}"
+		modelContent += "\n" + fmt.Sprintf("    %s\n", getModelRelations(req))
+		modelContent += "}"
 
 		if err := scanner.Err(); err != nil {
 			fmt.Println("error reading model.stub:", err)
@@ -43,7 +43,7 @@ func generateModels(req *requests.GenerateRequest) ([]Instruction, error) {
 
 		instructions = append(instructions, newInstruction(
 			fmt.Sprintf("app/Models/%s.php", modelName),
-			updatedContent,
+			modelContent,
 		))
 
 	}
@@ -51,5 +51,6 @@ func generateModels(req *requests.GenerateRequest) ([]Instruction, error) {
 }
 
 func getModelRelations(req *requests.GenerateRequest) string {
+
 	return "public function quiz (): \\Illuminate\\Database\\Eloquent\\Relations\\BelongsTo\n    {\n        return $this->belongsTo(Quiz::class);\n    }"
 }
