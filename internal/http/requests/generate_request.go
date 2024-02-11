@@ -1,7 +1,6 @@
 package requests
 
 type GenerateRequest struct {
-	Key               string            `json:"key"`
 	ClientEnvironment ClientEnvironment `json:"client_environment"`
 	Database          Database          `json:"database"`
 }
@@ -23,15 +22,18 @@ type Table struct {
 	Data    []Data   `json:"data"`
 }
 
+// Column TODO: актуализровать структуру
 type Column struct {
-	Name          string `json:"name"`
-	Type          string `json:"type"`
-	Length        int    `json:"length,omitempty"`
-	Unsigned      bool   `json:"unsigned,omitempty"`
-	Nullable      bool   `json:"nullable"`
-	AutoIncrement bool   `json:"auto_increment,omitempty"`
-	PrimaryKey    bool   `json:"primary_key,omitempty"`
-	Unique        bool   `json:"unique,omitempty"`
+	Name                string `json:"name"`
+	Type                string `json:"type"`
+	Length              int    `json:"length,omitempty"`
+	Unsigned            bool   `json:"unsigned,omitempty"`
+	Nullable            bool   `json:"nullable"`
+	AutoIncrement       bool   `json:"auto_increment,omitempty"`
+	PrimaryKey          bool   `json:"primary_key,omitempty"`
+	Unique              bool   `json:"unique,omitempty"`
+	IsForeignKey        bool   `json:"is_foreign_key"`
+	ReferencedTableName string `json:"referenced_table_name,omitempty"`
 }
 
 type Data struct {
